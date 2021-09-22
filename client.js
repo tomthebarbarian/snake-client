@@ -30,6 +30,7 @@ const connect = function() {
   conn.on('close', () => {
     //
     console.log('Server closed connection');
+    conn.end();
   });
 
   // stdin.on('data', (key) => {
