@@ -1,10 +1,14 @@
 const net = require("net");
+const { IP, PORT } = require("./constants");
+
 const connect = function() {
   // connect to server for Snake
   console.log("Connecting ...");
   const conn = net.createConnection({
-    host: '135.23.223.133',// IP address here,
-    port: 50542// PORT number here,
+    host: IP,// IP address here,
+    port: PORT// PORT number here,
+    // host: '135.23.223.133',// IP address here,
+    // port: 50542// PORT number here,
   });
 
   // interpret incoming data as text
@@ -15,11 +19,12 @@ const connect = function() {
   conn.on('connect', ()  => {
     //code that does something when the connection is first established
     console.log('Connection established with server.');
-
+    conn.write('Name: RA2');
     //pass data to server from here
     //put live commands here
 
   });
+
   // catches incoming data from server
   conn.on('data', (data) => {
     //

@@ -1,38 +1,38 @@
 // Snake Game Implementation over TCP and HTTP //
 // Connecting to the Server //
-const { on } = require("events");
-const net = require("net");
 
 // Input from keyboard
+const setupInput = require('./input');
 
+// const setupInput = function () {
+//   const stdin = process.stdin;
+//   stdin.setRawMode(true);
+//   stdin.setEncoding("utf8");
+//   stdin.resume();
+//   return stdin;
+// };
 
-const setupInput = function () {
-  const stdin = process.stdin;
-  stdin.setRawMode(true);
-  stdin.setEncoding("utf8");
-  stdin.resume();
-  return stdin;
-};
 const stdin = setupInput();
 
 const connect = require('./client');
 // establishes a connection with the game server
 const conn = connect();
-stdin.setEncoding('utf8');
-conn.on('connect', ()  => {
-  //code that does something when the connection is first established
-  
-  conn.write('Name: RA2');
-});
 
-const handleUserInput = (key) => {
+
+
+const controls = (key) => {
 // your code here
   console.log(key);
-  if (key === '\u0003') {
-    conn.write('ctrl-c end connection');
-    console.log('Ended Connection');
-    conn.end();
-    process.exit();
+  // if (key === '\u0003') {
+  //   conn.write('ctrl-c end connection');
+  //   console.log('Ended Connection');
+  //   conn.end();
+  //   process.exit();
+  // }
+  if (key === 't') {
+    // stdin.setRawMode = (false);
+    let msg = 'bowbowbowwwww';
+    conn.write(`Say: ${msg}`);
   }
   if (key === 'w') {
     conn.write("Move: up");
@@ -72,7 +72,7 @@ const handleUserInput = (key) => {
   }
 };
 
-stdin.on('data', handleUserInput);
+stdin.on('data', controls);
 
 // stdin.on('data', (key) => {
 //   if (key === '\u0003') {
