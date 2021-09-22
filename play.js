@@ -4,8 +4,16 @@ const { on } = require("events");
 const net = require("net");
 
 // Input from keyboard
-const stdin = process.stdin;
-stdin.setRawMode(true);
+
+
+const setupInput = function () {
+  const stdin = process.stdin;
+  stdin.setRawMode(true);
+  stdin.setEncoding("utf8");
+  stdin.resume();
+  return stdin;
+};
+const stdin = setupInput();
 
 const connect = require('./client');
 // establishes a connection with the game server
@@ -16,12 +24,15 @@ conn.on('connect', ()  => {
   
   conn.write('Name: RA2');
 });
-stdin.on('data', (key) => {
+
+const handleUserInput = (key) => {
+// your code here
   console.log(key);
   if (key === '\u0003') {
     conn.write('ctrl-c end connection');
     console.log('Ended Connection');
     conn.end();
+    process.exit();
   }
   if (key === 'w') {
     conn.write("Move: up");
@@ -59,7 +70,10 @@ stdin.on('data', (key) => {
     }, 0);
     conn.write("Move: down");
   }
-});
+};
+
+stdin.on('data', handleUserInput);
+
 // stdin.on('data', (key) => {
 //   if (key === '\u0003') {
 //     conn.write('ctrl-c end connection');
